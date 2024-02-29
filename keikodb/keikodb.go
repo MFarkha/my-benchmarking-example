@@ -57,7 +57,7 @@ func IncrementHitCount(db *sql.DB, name string) error {
 func SetHitCount(db *sql.DB, name string, count int) error {
 	_, err := db.Exec(`INSERT INTO
 		hits(name, count) VALUES(?, ?)
-    ON CONFLICT(name) DO UPDATE SET count = ?`, name, count, count)
+	ON CONFLICT(name) DO UPDATE SET count = ?`, name, count, count)
 
 	if err != nil {
 		display := color.New(color.FgRed).SprintFunc()

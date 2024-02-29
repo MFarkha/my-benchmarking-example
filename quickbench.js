@@ -27,6 +27,6 @@ export const options = {
 
 export default function () {
 
-  http.get('http://localhost:8099/bench');
+  http.get('http://localhost:8099/');
 
 }

@@ -82,6 +82,7 @@ func handleRoot(db *sql.DB) http.Handler {
 	})
 }
 
+// handler for a GET request on `/bench`
 func handleBench(db *sql.DB, output <-chan *ImageData) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		if req.Method != "GET" {
@@ -89,7 +90,7 @@ func handleBench(db *sql.DB, output <-chan *ImageData) http.Handler {
 		}
 		// start := time.Now()
 		imageData := <-output
-		// log.Println("image: time elapsed: ", time.Since(start).Microseconds())
+		// log.Println("--image prepare: time elapsed: ", time.Since(start).Milliseconds())
 		log.Println("Serve", imageData.Name)
 		w.Write(imageData.WebpImg.Bytes())
 		go updateDatabase(db)
@@ -168,8 +169,7 @@ var images = make(map[string]*ImageData)
 var imagesMutex = sync.Mutex{}
 
 func updateDatabase(db *sql.DB) {
-	log.Println("--starting database update")
-	start := time.Now()
+	// start := time.Now()
 	currentHits := make(map[string]int)
 	imagesMutex.Lock()
 	for k, v := range images {
@@ -179,7 +179,7 @@ func updateDatabase(db *sql.DB) {
 	for imgName, count := range currentHits {
 		keikodb.SetHitCount(db, imgName, count)
 	}
-	log.Println("--database update: time elapsed: ", time.Since(start).Milliseconds())
+	// log.Println("--database update: time elapsed: ", time.Since(start).Milliseconds())
 }
 
 func main() {
