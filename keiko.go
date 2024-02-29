@@ -185,8 +185,8 @@ func updateDatabase(db *sql.DB) {
 func main() {
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 
-	log.Println("Using database 'keiko.db'")
-	db, err := sql.Open("sqlite3", "file:keiko.db?cache=shared")
+	log.Println("Using database './data/keiko.db'")
+	db, err := sql.Open("sqlite3", "file:./_data/keiko.db?cache=shared")
 	if err != nil {
 		log.Fatal(err)
 	}
